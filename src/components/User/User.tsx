@@ -9,6 +9,7 @@ interface User {
 function User() {
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // with async await
@@ -26,16 +27,21 @@ function User() {
     // fetchUsers();
 
     const controller = new AbortController();
+    setIsLoading(true);
 
     // call axion get users - first option, more simple
     axios
       .get<User[]>("https://jsonplaceholder.typicode.com/users", {
         signal: controller.signal,
       })
-      .then((res) => setUsers(res.data))
+      .then((res) => {
+        setUsers(res.data);
+        setIsLoading(false);
+      })
       .catch((err) => {
         if (err instanceof CanceledError) return;
         setError(err.message);
+        setIsLoading(false);
       });
 
     return () => {
@@ -46,6 +52,11 @@ function User() {
   return (
     <div>
       {error && <p className="text-danger">{error}</p>}
+      {isLoading && (
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      )}
       <h3 className="m-3">Users</h3>
       <ul className="list-inside">
         {users.map((user) => (
