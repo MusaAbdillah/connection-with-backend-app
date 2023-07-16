@@ -49,6 +49,18 @@ function User() {
     };
   }, []);
 
+  const onDelete = (user: User) => {
+    const originalUsers = [...users];
+
+    setUsers(users.filter((usr) => usr.id !== user.id));
+    axios
+      .delete("https://jsonplaceholder.typicode.com/xusers/" + user.id)
+      .catch((err) => {
+        setError(err.message);
+        setUsers(originalUsers);
+      });
+  };
+
   return (
     <div>
       {error && <p className="text-danger">{error}</p>}
@@ -58,10 +70,19 @@ function User() {
         </div>
       )}
       <h3 className="m-3">Users</h3>
-      <ul className="list-inside">
+      <ul className="list-inside list-group">
         {users.map((user) => (
-          <li key={user.id} className="mb-3">
-            {user.name}
+          <li
+            key={user.id}
+            className="list-group-item mb-3 d-flex justify-content-between"
+          >
+            {user.name}{" "}
+            <button
+              className="btn btn-outline-danger"
+              onClick={() => onDelete(user)}
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>
