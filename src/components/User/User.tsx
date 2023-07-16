@@ -49,12 +49,32 @@ function User() {
     };
   }, []);
 
-  const onDelete = (user: User) => {
+  const deleteUser = (user: User) => {
     const originalUsers = [...users];
 
     setUsers(users.filter((usr) => usr.id !== user.id));
     axios
-      .delete("https://jsonplaceholder.typicode.com/xusers/" + user.id)
+      .delete("https://jsonplaceholder.typicode.com/users/" + user.id)
+      .catch((err) => {
+        setError(err.message);
+        setUsers(originalUsers);
+      });
+  };
+
+  const addUser = () => {
+    const newUser = { id: 0, name: "Mosh" };
+    const originalUsers = [...users];
+    // append: Add something to the end.
+    // prepend: Add something to the beginning.
+    // Dec 2, 2021
+    // setUsers([...users, newUser]); //append
+    setUsers([newUser, ...users]); //
+
+    axios
+      .post("https://jsonplaceholder.typicode.com/xusers", newUser)
+      .then(({ data: savedUser }) => {
+        setUsers([savedUser, ...users]);
+      })
       .catch((err) => {
         setError(err.message);
         setUsers(originalUsers);
@@ -70,6 +90,9 @@ function User() {
         </div>
       )}
       <h3 className="m-3">Users</h3>
+      <button className="btn btn-primary mb-3" onClick={() => addUser()}>
+        Add User
+      </button>
       <ul className="list-inside list-group">
         {users.map((user) => (
           <li
@@ -79,7 +102,7 @@ function User() {
             {user.name}{" "}
             <button
               className="btn btn-outline-danger"
-              onClick={() => onDelete(user)}
+              onClick={() => deleteUser(user)}
             >
               Delete
             </button>
