@@ -75,7 +75,7 @@ function User() {
   const updateUser = (user: Customer) => {
     const updatedUser = { ...user, name: user.name + "!" };
     const originalUsers = [...users];
-    const request = UserService.updateUser(user.id, updatedUser);
+    const request = UserService.updateUser(updatedUser);
 
     setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
 

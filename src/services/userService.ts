@@ -26,8 +26,8 @@ class UserService {
         return apiClient.post("/users", user)
     }
 
-    updateUser = (id: number,  payload: Customer) => {
-        return apiClient.patch("/users/" + id, payload)
+    updateUser = (payload: Customer) => {
+        return apiClient.patch("/users/" + payload.id, payload)
     }
 
 
