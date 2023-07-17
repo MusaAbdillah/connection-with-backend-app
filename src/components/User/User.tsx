@@ -43,7 +43,7 @@ function User() {
 
   const deleteUser = (user: Customer) => {
     const originalUsers = [...users];
-    const request = UserService.deleteUser(user);
+    const request = UserService.deleteUser(user.id);
 
     setUsers(users.filter((usr) => usr.id !== user.id));
     request.catch((err) => {

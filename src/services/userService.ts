@@ -18,19 +18,16 @@ class UserService {
         return {request, cancel: () => controller.abort}
     }
 
-    deleteUser = (user: Customer) => {
-        const request = apiClient.delete("/users/" + user.id)
-        return request
+    deleteUser = (id: number) => {
+        return apiClient.delete("/users/" + id)
     }
 
     addUser = (user: Customer) => {
-        const request = apiClient.post("/users", user)
-        return request
+        return apiClient.post("/users", user)
     }
 
     updateUser = (id: number,  payload: Customer) => {
-        const request = apiClient.patch("/users/" + id, payload)
-        return request
+        return apiClient.patch("/users/" + id, payload)
     }
 
 
