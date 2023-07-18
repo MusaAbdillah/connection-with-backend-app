@@ -26,7 +26,7 @@ function User() {
     setIsLoading(true);
 
     // call axion get users - first option, more simple
-    const { request, cancel } = UserService.getAllUsers();
+    const { request, cancel } = UserService.getAll<Customer>();
     request
       .then((res) => {
         setUsers(res.data);
@@ -43,7 +43,7 @@ function User() {
 
   const deleteUser = (user: Customer) => {
     const originalUsers = [...users];
-    const request = UserService.deleteUser(user.id);
+    const request = UserService.delete(user.id);
 
     setUsers(users.filter((usr) => usr.id !== user.id));
     request.catch((err) => {
@@ -55,7 +55,7 @@ function User() {
   const addUser = () => {
     const newUser = { id: 0, name: "Mosh" };
     const originalUsers = [...users];
-    const request = UserService.addUser(newUser);
+    const request = UserService.add(newUser);
     // append: Add something to the end.
     // prepend: Add something to the beginning.
     // Dec 2, 2021
@@ -75,7 +75,7 @@ function User() {
   const updateUser = (user: Customer) => {
     const updatedUser = { ...user, name: user.name + "!" };
     const originalUsers = [...users];
-    const request = UserService.updateUser(updatedUser);
+    const request = UserService.update(updatedUser);
 
     setUsers(users.map((u) => (u.id === user.id ? updatedUser : u)));
 
